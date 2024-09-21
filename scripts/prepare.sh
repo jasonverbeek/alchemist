@@ -29,18 +29,7 @@ echo '= AMD / INTEL 64 ='
 echo '=================='
 echo
 podman build --file="${SCRIPT_DIR}/Dockerfile" \
-  --platform=linux/amd64 \
-  --manifest ${DEV_IMAGE_NAME} \
-  ${ADDITIONAL_OPTIONS} \
-  .
-
-echo
-echo '=================='
-echo '= ARM 64 ='
-echo '=================='
-echo
-podman build --file="${SCRIPT_DIR}/Dockerfile" \
-  --platform=linux/arm64 \
+  --platform=linux/amd64,linux/arm64 \
   --manifest ${DEV_IMAGE_NAME} \
   ${ADDITIONAL_OPTIONS} \
   .

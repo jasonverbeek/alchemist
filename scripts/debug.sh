@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Sets: PROJECT_DIR, DEV_IMAGE_NAME, DEV_IMAGE_LOCAL_NAME, ARTIFACTS_DIR
+# Sets: PROJECT_DIR, IMAGE_NAME, DEV_IMAGE_LOCAL_NAME, ARTIFACTS_DIR
 SCRIPT_DIR="$(realpath $(dirname $0))"
 . "${SCRIPT_DIR}/vars.sh"
 
@@ -22,7 +22,7 @@ esac
 
 if [ "$2" == "--keep" ]; then
   # TODO: Not having `--rm` doesn't seem to make a difference..? Why?
-  podman run --arch ${TARGET_ARCH} -it -v ${PROJECT_DIR}:/var/src "${REGISTRY_DNS_NAME}/${DEV_IMAGE_NAME}" /bin/sh
+  podman run --arch ${TARGET_ARCH} -it -v ${PROJECT_DIR}:/var/src "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" /bin/sh
 else
-  podman run --arch ${TARGET_ARCH} -it --rm -v ${PROJECT_DIR}:/var/src "${REGISTRY_DNS_NAME}/${DEV_IMAGE_NAME}" /bin/sh
+  podman run --arch ${TARGET_ARCH} -it --rm -v ${PROJECT_DIR}:/var/src "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" /bin/sh
 fi

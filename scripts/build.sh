@@ -16,9 +16,9 @@ echo '=================='
 echo '= AMD / INTEL 64 ='
 echo '=================='
 echo
-podman run --platform=linux/amd64 -v "${PROJECT_DIR}:/var/src" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
-if test -f "${PROJECT_DIR}/target/release/alchemist"; then
-  cp -p "${PROJECT_DIR}/target/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-x86_64"
+podman run --platform=linux/amd64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-amd64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
+if test -f "${PROJECT_DIR}/target-amd64/release/alchemist"; then
+  cp -p "${PROJECT_DIR}/target-amd64/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-x86_64"
 else
   echo "No build artifact found, aborting"
   exit 1
@@ -30,9 +30,9 @@ echo '=================='
 echo '= ARM 64 ='
 echo '=================='
 echo
-podman run --platform=linux/arm64 -v "${PROJECT_DIR}:/var/src" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
-if test -f "${PROJECT_DIR}/target/release/alchemist"; then
-  cp -p "${PROJECT_DIR}/target/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-arm64"
+podman run --platform=linux/arm64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-arm64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
+if test -f "${PROJECT_DIR}/target-arm64/release/alchemist"; then
+  cp -p "${PROJECT_DIR}/target-arm64/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-arm64"
 else
   echo "No build artifact found, aborting"
   exit 1

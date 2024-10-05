@@ -7,7 +7,6 @@ SCRIPT_DIR="$(realpath $(dirname $0))"
 . "${SCRIPT_DIR}/vars.sh"
 
 # Ensure environment is clean:
-cargo clean
 test -d "${ARTIFACTS_DIR}" && rm -rf "${ARTIFACTS_DIR}"
 mkdir -p ${ARTIFACTS_DIR}
 
@@ -16,6 +15,7 @@ echo '=================='
 echo '= AMD / INTEL 64 ='
 echo '=================='
 echo
+podman run --platform=linux/amd64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-amd64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo clean
 podman run --platform=linux/amd64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-amd64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
 if test -f "${PROJECT_DIR}/target-amd64/release/alchemist"; then
   cp -p "${PROJECT_DIR}/target-amd64/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-x86_64"
@@ -24,12 +24,12 @@ else
   exit 1
 fi
 
-cargo clean # Clean before next arch build.
 echo
 echo '=================='
 echo '= ARM 64 ='
 echo '=================='
 echo
+podman run --platform=linux/arm64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-arm64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo clean
 podman run --platform=linux/arm64 -v "${PROJECT_DIR}:/var/src" -e CARGO_TARGET_DIR="target-arm64" --rm "${REGISTRY_DNS_NAME}/${IMAGE_NAME}" cargo build --release
 if test -f "${PROJECT_DIR}/target-arm64/release/alchemist"; then
   cp -p "${PROJECT_DIR}/target-arm64/release/alchemist" "${ARTIFACTS_DIR}/alchemist-linux-arm64"
